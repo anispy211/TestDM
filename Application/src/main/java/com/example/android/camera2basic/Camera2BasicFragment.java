@@ -54,11 +54,15 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -77,6 +81,9 @@ public class Camera2BasicFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
 
     private DrawingView drawingView;
+
+    private View opacityView;
+
 
 
     /**
@@ -413,15 +420,67 @@ public class Camera2BasicFragment extends Fragment
         return new Camera2BasicFragment();
     }
 
+    int GLOBAL_TOUCH_POSITION_X = 0;
+    int GLOBAL_TOUCH_CURRENT_POSITION_X = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        View v = inflater.inflate(R.layout.fragment_camera2_basic, container, false);
 
 
-
-        return inflater.inflate(R.layout.fragment_camera2_basic, container, false);
+        return v;
     }
+
+//    void handleTouch(MotionEvent m){
+//        //Number of touches
+//        int pointerCount = m.getPointerCount();
+//        if(pointerCount == 2){
+//            int action = m.getActionMasked();
+//            int actionIndex = m.getActionIndex();
+//            String actionString;
+//          //  TextView tv = (TextView) findViewById(R.id.testDiffText);
+//            switch (action)
+//            {
+//                case MotionEvent.ACTION_DOWN:
+//                    GLOBAL_TOUCH_POSITION_X = (int) m.getX(1);
+//                    actionString = "DOWN"+" current "+GLOBAL_TOUCH_CURRENT_POSITION_X+" prev "+GLOBAL_TOUCH_POSITION_X;
+//                 //   tv.setText(actionString);
+//                    break;
+//                case MotionEvent.ACTION_UP:
+//                    GLOBAL_TOUCH_CURRENT_POSITION_X = 0;
+//                    actionString = "UP"+" current "+GLOBAL_TOUCH_CURRENT_POSITION_X+" prev "+GLOBAL_TOUCH_POSITION_X;
+//                 //   tv.setText(actionString);
+//                    break;
+//                case MotionEvent.ACTION_MOVE:
+//                    GLOBAL_TOUCH_CURRENT_POSITION_X = (int) m.getX(1);
+//                    int diff = GLOBAL_TOUCH_POSITION_X-GLOBAL_TOUCH_CURRENT_POSITION_X;
+//                    actionString = "Diff "+diff+" current "+GLOBAL_TOUCH_CURRENT_POSITION_X+" prev "+GLOBAL_TOUCH_POSITION_X;
+//               //     tv.setText(actionString);
+//
+//                    opacityView.setX(GLOBAL_TOUCH_CURRENT_POSITION_X);
+//
+//
+//
+//                    break;
+//                case MotionEvent.ACTION_POINTER_DOWN:
+//                    GLOBAL_TOUCH_POSITION_X = (int) m.getX(1);
+//                    actionString = "DOWN"+" current "+GLOBAL_TOUCH_CURRENT_POSITION_X+" prev "+GLOBAL_TOUCH_POSITION_X;
+//                 //   tv.setText(actionString);
+//                    break;
+//                default:
+//                    actionString = "";
+//            }
+//
+//            pointerCount = 0;
+//        }
+//        else {
+//            GLOBAL_TOUCH_POSITION_X = 0;
+//            GLOBAL_TOUCH_CURRENT_POSITION_X = 0;
+//        }
+//    }
+
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
@@ -432,8 +491,20 @@ public class Camera2BasicFragment extends Fragment
         drawingView = (DrawingView) view.findViewById(R.id.drawing);
 
 
+        setOpacitylayerAlpha(0.0f,view);
+
+        opacityView = view;
 
 
+
+
+    }
+
+
+    public void setOpacitylayerAlpha(float val,View view)
+    {
+        View view2 = view.findViewById(R.id.pathview);
+        view2.setAlpha(val);
     }
 
     @Override

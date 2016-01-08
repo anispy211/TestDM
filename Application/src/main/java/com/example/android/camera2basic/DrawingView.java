@@ -71,6 +71,13 @@ public class DrawingView extends View implements OnTouchListener {
 	}
 
 	public boolean onTouch(View arg0, MotionEvent event) {
+
+		int pointerCount = event.getPointerCount();
+
+		if (pointerCount > 1)
+			return true;
+
+
 		float x = event.getX();
 		float y = event.getY();
 
